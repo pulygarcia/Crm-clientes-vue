@@ -1,10 +1,23 @@
 <script setup>
+    import {useRouter} from 'vue-router';
+    import ClienteServices from '../services/ClienteServices';
     import RouterLink  from '../components/UI/RouterLink.vue';
     import Heading  from '../components/UI/Heading.vue';
+
+    const router = useRouter();
 
     defineProps({
         titulo: String
     })
+
+    const handleSubmit = (data) => {
+        data.estado = 1;
+        ClienteServices.agregarCliente(data)
+            .then(resultado => {
+                //redireccionar
+                router.push({name: 'inicio'})
+            })
+    }
 </script>
 
 <template>
@@ -17,7 +30,12 @@
 
     <div class="mt-10 mx-auto bg-white shadow-lg">
         <div class="mx-auto p-6 md:w-2/3">
-            <FormKit type="form" :actions="false" incomplete-message="Por favor revisa los campos">
+            <FormKit 
+                type="form" 
+                :actions="false" 
+                incomplete-message="Por favor revisa los campos"
+                @submit="handleSubmit"
+            >
                 <FormKit
                 type="text"
                 name="nombre"
