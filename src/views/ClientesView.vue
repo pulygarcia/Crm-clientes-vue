@@ -1,4 +1,5 @@
 <script setup>
+    import { useRouter } from 'vue-router';
     import { onMounted, ref, computed } from 'vue';
     import ClienteServices from '../services/ClienteServices';
     import RouterLink from '../components/UI/RouterLink.vue';
@@ -6,6 +7,8 @@
     import Cliente from '../components/Cliente.vue';
 
     const clientes = ref([]);
+
+    const router = useRouter()
 
     defineProps({
         titulo: String
@@ -22,6 +25,23 @@
     const hayClientes = computed(() => {
         return clientes.value.length > 0;
     })
+
+    const actualizarEstado = (datosCliente) => {
+        ClienteServices.actualizarEstado(datosCliente.id, {estado: !datosCliente.estado})
+            .then(() => {
+                const cliente = clientes.value.filter(cliente => cliente.id === datosCliente.id)[0];
+                cliente.estado = !cliente.estado;
+            })
+            .catch(error => console.log(error))
+    }
+
+    const eliminarCliente = (id) =>{
+        ClienteServices.eliminarCliente(id)
+            .then(() => {
+                clientes.value = clientes.value.filter(cliente => cliente.id !== id)
+            })
+            .catch(error => console.log(error))
+    }
 </script>
 
 <template>
@@ -50,6 +70,8 @@
                         v-for="cliente in clientes"
                         :cliente="cliente"
                         :key="cliente.id"
+                        @actualizar-estado="actualizarEstado"
+                        @eliminar-cliente="eliminarCliente"
                     />
                   </tbody>
               </table>

@@ -9,8 +9,14 @@
         }
     })
 
+    defineEmits(['actualizar-estado', 'eliminar-cliente'])
+
     const nombreApellido = computed(() => {
       return props.cliente.nombre + ' ' + props.cliente.apellido;
+    })
+
+    const estadoCliente = computed(() => {
+      return props.cliente.estado > 0;
     })
 </script>
 
@@ -25,11 +31,17 @@
             <p class="text-gray-600">{{ cliente.puesto }}</p>
         </td>
         <td class="whitespace-nowrap px-3 py-4 text-sm">
-          <p :class="cliente.estado === 1 ? 'text-green-500' : 'text-gray-600'">{{ cliente.estado === 1 ? 'Activo' : 'Inactivo'}}</p>
+          <button 
+            class="rounded-full font-semibold text-xs p-2"
+            :class="estadoCliente ? 'bg-green-200 text-green-600' : 'bg-red-200 text-red-500'"
+            @click="$emit('actualizar-estado', {id: cliente.id, estado: cliente.estado})"
+          >
+            {{ estadoCliente ? 'Activo' : 'Inactivo' }}
+          </button>
         </td>
         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 ">
           <RouterLink 
-            to="/"
+            :to="{name: 'editar-cliente', params: {id: cliente.id}}"
             class="text-indigo-500 hover:text-indigo-800"
           >
             Editar
@@ -38,6 +50,7 @@
           <RouterLink 
             to="/"
             class="text-red-600 ms-2"
+            @click="$emit('eliminar-cliente', cliente.id)"
           >
             Eliminar
           </RouterLink>

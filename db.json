@@ -4,19 +4,11 @@
       "nombre": "Jose Ignacio",
       "apellido": "Robledo",
       "email": "pulygarcia09@gmail.com",
-      "telefono": "000-000-0000",
-      "empresa": "Tonio banderas",
+      "telefono": "000-000-3333",
+      "empresa": "Globant",
       "puesto": "Gerente",
       "estado": 1,
       "id": 1
-    },
-    {
-      "nombre": "Puly",
-      "apellido": "Garcia",
-      "email": "pulygarcia09@gmail.com",
-      "telefono": "000-000-0000",
-      "estado": 0,
-      "id": 2
     }
   ]
 }
